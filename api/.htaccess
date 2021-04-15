@@ -6,10 +6,8 @@
     RewriteRule SKdni SKdni/index.php [NC]
 
 #    RewriteRule ^(\d{4})/(\D+)$ index.php?date=$1&name=$2 [QSA,NC,L]
-    RewriteRule ^(\d{4})$ index.php?date=$1 [NC]
-    RewriteRule ^([a-zA-Z]{2})/(\D+)$ index.php?code=$1&name=$2 [NC]
-
-
+     RewriteRule ^(\d{4})$ index.php?date=$1 [NC]
+     RewriteRule ^([a-zA-Z]{2})/(\D+)$ index.php?code=$1&name=$2 [NC]
 
 #    RewriteCond %{REQUEST_FILENAME} !-d
 #    RewriteCond %{REQUEST_FILENAME} !-s

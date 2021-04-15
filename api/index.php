@@ -9,16 +9,17 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
     $country_code = strtoupper($_GET["code"]);
     $name = ucfirst(strtolower($_GET["name"]));
     if(!in_array($country_code, $codes)){
-        echo "invalid state";
+        echo json_encode("invalid state code", JSON_UNESCAPED_UNICODE);
         return;
     }
 
     $stmt = $conn->query("SELECT days.day as day, days.month as month FROM records JOIN countries ON records.country_id=countries.id JOIN days ON records.day_id=days.id WHERE countries.code='".$country_code."' and records.value='".$name."'");
-    $date = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($date == null){
-        echo "nobody found";
+    $dateField = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($dateField == null){
+        echo json_encode("nobody found", JSON_UNESCAPED_UNICODE);
     }else{
-        echo $date["day"].".".$date["month"].".";
+        echo json_encode($dateField["day"].".".$dateField["month"].".", JSON_UNESCAPED_UNICODE);
     }
 
 }else if(isset($_GET["date"])){
@@ -52,8 +53,8 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
 
     $stmt = $conn->query("INSERT INTO `records`(`day_id`, `country_id`, `type`, `value`) VALUES (".$dayId.",".$SKid.",'name','".$_POST["name"]."')");
     //echo $dayId.",".$SKid.",'name',".$_POST["name"];
-    echo "successfully added";
+    echo json_encode("successfully added", JSON_UNESCAPED_UNICODE);
 } else{
-    echo "something went wrong";
+    echo json_encode("missing or invalid parameters", JSON_UNESCAPED_UNICODE);
 }
 

@@ -335,6 +335,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+getValue("specials"),
             function(result) {
+                console.log(result);
                 $( "#listArea" ).val(JSON.stringify(result));
             }
         );
@@ -344,6 +345,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+formatDateById("whoDate"),
             function(result) {
+                console.log(result);
                 $( "#whoArea" ).val(JSON.stringify(result));
             }
         );
@@ -351,9 +353,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
     });
     $( "#whenForm" ).submit(function( event ) {
         event.preventDefault();
+        console.log(getValue("whenCountry") +"/"+ getValue("whenName"));
         $.get(
             "api/"+ getValue("whenCountry") +"/"+ getValue("whenName"),
             function(result) {
+                console.log(result);
                 $( "#whenArea" ).val(JSON.stringify(result));
             }
         );
@@ -364,6 +368,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             "api/",
             {date: formatDateById("newDate"), name: getValue("newName")},
             function(result){
+                console.log(result);
                 $( "#addArea" ).val(result);
             }
         );
