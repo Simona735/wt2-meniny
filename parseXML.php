@@ -61,7 +61,7 @@ foreach ($xml->children() as $row){
             $country_id = $countries[$item]["id"];
             foreach (explode(",", $row->$item) as $name){
                 $value = trim($name);
-                if(!empty($value)){
+                if(!empty($value) && strcmp($value,"-")){
                     $stmtRecords->execute();
                 }
             }
@@ -69,7 +69,7 @@ foreach ($xml->children() as $row){
             $country_id = $countries["SK"]["id"];
             foreach (explode(",", $row->SKd) as $name){
                 $value = trim($name);
-                if(!empty($value)){
+                if(!empty($value) && strcmp($value,"-")){
                     $stmtRecords->execute();
                 }
             }
