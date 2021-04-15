@@ -37,7 +37,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         <div class="row g-5 justify-content-center">
             <div class="col-md-8">
                 <h4 class="mb-3">Získaj zoznam</h4>
-                <form class="mb-5">
+                <form class="mb-5" id="specialsForm">
                     <div class="col-md-5">
                         <label for="specials" class="form-label">Získaj zoznam sviatkov alebo dní</label>
                         <select class="form-select" name="specials" id="specials" required>
@@ -52,11 +52,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                 <hr>
 
                 <h4 class="mb-3">Kto má meniny?</h4>
-                <form class="mb-5">
+                <form class="mb-5" id="whoForm">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="country" class="form-label">Krajina</label>
-                            <select class="form-select" name="country" id="country" required>
+                            <label for="whoCountry" class="form-label">Krajina</label>
+                            <select class="form-select" name="whoCountry" id="whoCountry" required>
                                 <option value="">Choose...</option>
                                 <?php
                                 foreach ($countries as $country){?>
@@ -68,8 +68,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="date" class="form-label">Dátum</label>
-                            <input type="date" class="form-control" name="date" id="date" placeholder="" value="" required>
+                            <label for="whoDate" class="form-label">Dátum</label>
+                            <input type="date" class="form-control" name="whoDate" id="whoDate" placeholder="" value="" required>
                         </div>
                     </div>
 
@@ -78,11 +78,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                 <hr>
 
                 <h4 class="mb-3">Kedy má meniny ...?</h4>
-                <form class="mb-5">
+                <form class="mb-5" id="whenForm">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="country" class="form-label">Krajina</label>
-                            <select class="form-select" name="country" id="country" required>
+                            <label for="whenCountry" class="form-label">Krajina</label>
+                            <select class="form-select" name="whenCountry" id="whenCountry" required>
                                 <option value="">Choose...</option>
                                 <?php
                                 foreach ($countries as $country){?>
@@ -94,8 +94,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="name" class="form-label">Meno</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="" value="" required>
+                            <label for="whenName" class="form-label">Meno</label>
+                            <input type="text" class="form-control" id="whenName" name="whenName" placeholder="" value="" required>
                         </div>
                     </div>
                     <button class="w-25 mt-3 btn btn-primary " type="submit">Submit</button>
@@ -103,15 +103,15 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                 <hr>
 
                 <h4 class="mb-3">Pridaj nové meno</h4>
-                <form class="mb-5">
+                <form class="mb-5" id="addForm">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="date" class="form-label">Dátum</label>
-                            <input type="date" class="form-control" name="date" id="date" placeholder="" value="" required>
+                            <label for="newDate" class="form-label">Dátum</label>
+                            <input type="date" class="form-control" name="newDate" id="newDate" placeholder="" value="" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="name" class="form-label">Meno</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="" value="" required>
+                            <label for="newName" class="form-label">Meno</label>
+                            <input type="text" class="form-control" id="newName" name="newName" placeholder="" value="" required>
                         </div>
                     </div>
                     <button class="w-25 mt-3 btn btn-primary " type="submit">Submit</button>
@@ -124,8 +124,57 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         <p class="mb-1">&copy;2021 WEBTECH2 - Richterová </p>
     </footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
 
+<script>
+    $( "#specialsForm" ).submit(function( event ) {
+        event.preventDefault();
+        $.get(
+            "api/"+getValue("specials"),
+            function(result) {
+                console.log(result);
+            }
+        );
+    });
+    $( "#whoForm" ).submit(function( event ) {
+        event.preventDefault();
+        $.get(
+            "api/"+getValue("whoCountry") +"/"+formatDateById("whoDate"),
+            function(result) {
+                console.log(result);
+            }
+        );
+
+    });
+    $( "#whenForm" ).submit(function( event ) {
+        event.preventDefault();
+        $.get(
+            "api/"+ getValue("whenCountry") +"/"+ getValue("whenName"),
+            function(result) {
+                console.log(result);
+            }
+        );
+    });
+    $( "#addForm" ).submit(function( event ){
+        event.preventDefault();
+        $.post(
+            "api/",
+            {date: formatDateById("newDate"), name: getValue("newName")},
+            function(result){
+                console.log(result);
+            }
+        );
+    });
+
+    function getValue(elementId){
+        return document.getElementById(elementId).value;
+    }
+
+    function formatDateById(elementId){
+        let rawDate = getValue(elementId);
+        return rawDate.substring(8, 10) + rawDate.substring(5, 7);
+    }
+</script>
 </body>
 </html>
