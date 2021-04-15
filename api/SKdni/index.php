@@ -10,4 +10,3 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     array_push($SKdni, [$row["day"] . "." . $row["month"] . ".", $row["value"]]);
 }
 echo json_encode($SKdni, JSON_UNESCAPED_UNICODE);
-
