@@ -23,7 +23,7 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
 }else if(isset($_GET["date"])){
     $day = substr($_GET["date"], 0, 2);
     $month = substr($_GET["date"], 2, 2);
-    $stmt = $conn->query("SELECT code, title, value FROM records JOIN days ON records.day_id=days.id JOIN countries ON records.country_id=countries.id WHERE records.type='name' days.day=".$day." AND days.month=".$month);
+    $stmt = $conn->query("SELECT code, title, value FROM records JOIN days ON records.day_id=days.id JOIN countries ON records.country_id=countries.id WHERE records.type='name' AND days.day=".$day." AND days.month=".$month);
 
     $records = [];
     while($row = $stmt->fetch(PDO::FETCH_ASSOC))
