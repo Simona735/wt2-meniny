@@ -353,7 +353,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
     });
     $( "#whenForm" ).submit(function( event ) {
         event.preventDefault();
-        console.log(getValue("whenCountry") +"/"+ getValue("whenName"));
         $.get(
             "api/"+ getValue("whenCountry") +"/"+ getValue("whenName"),
             function(result) {
