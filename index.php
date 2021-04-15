@@ -349,9 +349,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+formatDateById("whoDate"),
             function(result) {
-                console.log(result);
-                console.log(typeof result);
-                $( "#whoArea" ).val(result);
+                $( "#whoArea" ).val(JSON.stringify(result));
             }
         );
 
@@ -361,7 +359,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+ getValue("whenCountry") +"/"+ getValue("whenName"),
             function(result) {
-                $( "#whenArea" ).val(result);
+                $( "#whenArea" ).val(JSON.stringify(result));
             }
         );
     });

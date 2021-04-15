@@ -1,5 +1,6 @@
 <?php
 require_once "../Database.php";
+header('Content-Type: application/json');
 $conn = (new Database())->getConnection();
 
 $codes = ["SK", "CZ", "AT", "HU", "PL",];
