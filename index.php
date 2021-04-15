@@ -10,10 +10,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 {
     array_push($countries, [$row["title"], $row["code"]]);
 }
-
 ?>
-
-
 <!doctype html>
 <html lang="sk">
 <head>
@@ -284,7 +281,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                                     <?php
                                 }
                                 ?>
-
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -333,7 +329,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
     $('#docButton').click(function() {
         $('#doc').toggle();
     });
-
 
     $( "#specialsForm" ).submit(function( event ) {
         event.preventDefault();
