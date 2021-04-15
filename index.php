@@ -32,7 +32,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         <div class="py-5 text-center">
             <h2 class="">REST API Dokumentácia</h2>
 <!--            <p class="lead">Try it out!</p>-->
-            <button id="docButton" class="w-25 mt-3 btn btn-primary" >Dokumentácia</button>
+            <button id="docButton" class="mt-3 btn btn-primary" >Dokumentácia</button>
         </div>
 
         <div id="doc" class="row g-5 justify-content-center">
@@ -246,7 +246,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                             <option>SKdni</option>
                         </select>
                     </div>
-                    <button class="w-25 mt-3 btn btn-primary" type="submit">Submit</button>
+                    <button class="mt-3 btn btn-primary" type="submit">Submit</button>
                 </form>
                 <div class="form-floating mb-5">
                     <textarea class="form-control" placeholder="Leave a comment here" id="listArea"></textarea>
@@ -263,7 +263,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         </div>
                     </div>
 
-                    <button class="w-25 mt-3 btn btn-primary" type="submit">Submit</button>
+                    <button class="mt-3 btn btn-primary" type="submit">Submit</button>
                 </form>
                 <div class="form-floating mb-5">
                     <textarea class="form-control" placeholder="Leave a comment here" id="whoArea"></textarea>
@@ -292,7 +292,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                             <input type="text" class="form-control" id="whenName" name="whenName" placeholder="" value="" required>
                         </div>
                     </div>
-                    <button class="w-25 mt-3 btn btn-primary " type="submit">Submit</button>
+                    <button class="mt-3 btn btn-primary " type="submit">Submit</button>
                 </form>
                 <div class="form-floating mb-5">
                     <textarea class="form-control" placeholder="Leave a comment here" id="whenArea"></textarea>
@@ -312,7 +312,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                             <input type="text" class="form-control" id="newName" name="newName" placeholder="" value="" required>
                         </div>
                     </div>
-                    <button class="w-25 mt-3 btn btn-primary " type="submit">Submit</button>
+                    <button class="mt-3 btn btn-primary " type="submit">Submit</button>
                 </form>
                 <div class="form-floating mb-5">
                     <textarea class="form-control" placeholder="Leave a comment here" id="addArea"></textarea>
