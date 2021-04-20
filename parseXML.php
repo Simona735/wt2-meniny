@@ -49,16 +49,16 @@ foreach ($xml->children() as $row){
         if(array_key_exists($item, $countries)){                       //ak meniny
             addNames($item, $row->$item);
         }
-        elseif(!strcmp($item,"SKd")){                           //ak sk doplnkove meniny
+        elseif(!strcmp($item,"SKd")){                           //ak SK doplnkove meniny
             addNames("SK", $row->$item);
         }
-        elseif(!strcmp($item,"SKsviatky")){                     //ak sk sviatok
+        elseif(!strcmp($item,"SKsviatky")){                     //ak SK sviatok
             addDays("SK", "holiday", $row->$item);
         }
-        elseif(!strcmp($item,"CZsviatky")){                     //ak cz sviatok
+        elseif(!strcmp($item,"CZsviatky")){                     //ak CZ sviatok
             addDays("CZ", "holiday", $row->$item);
         }
-        elseif(!strcmp($item,"SKdni")){                         //ak sk pamatny den
+        elseif(!strcmp($item,"SKdni")){                         //ak SK pamatny den
             addDays("SK", "memorial", $row->$item);
         }
     }
