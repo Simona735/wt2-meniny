@@ -42,7 +42,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <h6 class="card-title mt-4 text-primary">DECRIBTION</h6>
                         <p class="card-text">získa zoznam všetkých sviatkov v Čechách spolu s dňom, na ktorý tieto sviatky pripadajú</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <span class="card-text">JSON, structure:</span>
+                        <p class="card-text"><b>date</b>(string): <b>holidayName</b>(string)</p>
+                        <hr>
+                        <p class="text-danger">404 Not Found</p>
+                        <p class="card-text">Wrong URL</p>
                         <a href="#specialsForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -54,7 +59,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <h6 class="card-title mt-4 text-primary">DECRIBTION</h6>
                         <p class="card-text">získa zoznam všetkých sviatkov na Slovensku spolu s dňom, na ktorý tieto sviatky pripadajú</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <span class="card-text">JSON, structure:</span>
+                        <p class="card-text"><b>date</b>(string): <b>holidayName</b>(string)</p>
+                        <hr>
+                        <p class="text-danger">404 Not Found</p>
+                        <p class="card-text">Wrong URL</p>
                         <a href="#specialsForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -66,7 +76,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <h6 class="card-title mt-4 text-primary">DECRIBTION</h6>
                         <p class="card-text">získa zoznam všetkých pamätných dní na Slovensku spolu s dňom, na ktorý tieto dni pripadajú</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <span class="card-text">JSON, structure:</span>
+                        <p class="card-text"><b>date</b>(string): <b>memorialName</b>(string)</p>
+                        <hr>
+                        <p class="text-danger">404 Not Found</p>
+                        <p class="card-text">Wrong URL</p>
                         <a href="#specialsForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -103,7 +118,15 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <h6 class="card-title mt-4 text-primary">EXAMPLE</h6>
                         <p class="card-text">/api/2804</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <span class="card-text">JSON, structure:</span>
+                        <p class="card-text"><b>countryCode</b>(string): <b>names</b>(Array&#60;string&#62;)</p>
+                        <hr>
+                        <p class="text-danger">400 Bad Request</p>
+                        <p class="card-text">Invalid date</p>
+                        <hr>
+                        <p class="text-danger">404 Not Found</p>
+                        <p class="card-text">Nobody found</p>
                         <a href="#whoForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -161,7 +184,12 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <h6 class="card-title mt-4 text-primary">EXAMPLE</h6>
                         <p class="card-text">/api/SK/2804</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <span class="card-text"><b>date</b>(string)</span>
+                        <p class="card-text">Example: 12.3.</p>
+                        <hr>
+                        <p class="text-danger">404 Not Found</p>
+                        <p class="card-text">Wrong country code or nobody found</p>
                         <a href="#whenForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -217,7 +245,11 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         </table>
                         <hr>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
-                        <p class="card-text">content</p>
+                        <p class="text-success">200 Success</p>
+                        <p class="card-text">Status message</p>
+                        <hr>
+                        <p class="text-danger">400 Bad Request</p>
+                        <p class="card-text">Invalid date</p>
                         <a href="#addForm" class="btn btn-primary">Vyskúšaj</a>
                     </div>
                 </div>
@@ -334,9 +366,10 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         event.preventDefault();
         $.get(
             "api/"+getValue("specials"),
-            function(result) {
-                console.log(result);
-                $( "#listArea" ).val(JSON.stringify(result));
+            function(data) {
+                console.log(typeof data);
+                console.log(data);
+                $( "#listArea" ).val(JSON.stringify(data));
             }
         );
     });
@@ -344,33 +377,40 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         event.preventDefault();
         $.get(
             "api/"+formatDateById("whoDate"),
-            function(result) {
-                console.log(result);
-                $( "#whoArea" ).val(JSON.stringify(result));
+            function(data) {
+                console.log(typeof data);
+                console.log(data);
+                $( "#whoArea" ).val(JSON.stringify(data));
             }
-        );
+        ).fail(function(data, status, xhr) {
+            $( "#whoArea" ).val(xhr);
+        });
 
     });
     $( "#whenForm" ).submit(function( event ) {
         event.preventDefault();
         $.get(
             "api/"+ getValue("whenCountry") +"/"+ getValue("whenName"),
-            function(result) {
-                console.log(result);
-                $( "#whenArea" ).val(JSON.stringify(result));
+            function(data) {
+                console.log(typeof data);
+                console.log(data);
+                $( "#whenArea" ).val(JSON.stringify(data));
             }
-        );
+        ).fail(function(data, status, xhr) {
+            $( "#whenArea" ).val(xhr);
+        });
     });
     $( "#addForm" ).submit(function( event ){
         event.preventDefault();
         $.post(
             "api/",
             {date: formatDateById("newDate"), name: getValue("newName")},
-            function(result){
-                console.log(result);
-                $( "#addArea" ).val(result);
+            function(data, status){
+                $( "#addArea" ).val(status);
             }
-        );
+        ).fail(function(data, status, xhr) {
+            $( "#addArea" ).val(xhr);
+        });
     });
 
     function getValue(elementId){

@@ -5,8 +5,8 @@ $conn = (new Database())->getConnection();
 
 $stmt = $conn->query("SELECT days.day as day, days.month as month, records.value as value FROM records JOIN days ON days.id=records.day_id JOIN countries ON countries.id=records.country_id WHERE records.type='holiday' AND countries.code='CZ' ORDER BY days.month, days.day");
 
-$CZsviatky = [];
-while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    array_push($CZsviatky, [$row["day"].".".$row["month"].".", $row["value"]]);
+$json = [];
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $json[$row["day"].".".$row["month"]."."] = $row["value"];
 }
-echo json_encode($CZsviatky, JSON_UNESCAPED_UNICODE);
+echo json_encode($json, JSON_UNESCAPED_UNICODE);
