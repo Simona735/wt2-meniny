@@ -45,53 +45,62 @@ foreach ($xml->children() as $row){
     $day_id = $d->fetchColumn();
 
     foreach (array_keys(((array) $row)) as $item){
-        if(array_key_exists($item, $countries)){
-            if(!isset($countries[$item]["id"])){
-                $code = $item;
-                $title = $countries[$item]["title"];
-                $stmtCountries->execute();
 
-                $c = $conn->prepare("SELECT id FROM countries WHERE code='".$code."'");
-                $c->execute();
-                $country_id = $c->fetchColumn();
-                $countries[$item]["id"] = $country_id;
-            }
-
-            $type = "name";
-            $country_id = $countries[$item]["id"];
-            foreach (explode(",", $row->$item) as $name){
-                $value = trim($name);
-                if(!empty($value) && strcmp($value,"-")){
-                    $stmtRecords->execute();
-                }
-            }
-        }else if(!strcmp($item,"SKd")){
-            $country_id = $countries["SK"]["id"];
-            foreach (explode(",", $row->SKd) as $name){
-                $value = trim($name);
-                if(!empty($value) && strcmp($value,"-")){
-                    $stmtRecords->execute();
-                }
-            }
-        }else if(!strcmp($item,"SKsviatky")){
-            $country_id = $countries["SK"]["id"];
-            $value = trim($row->SKsviatky);
-            $type = "holiday";
-            $stmtRecords->execute();
-        }else if(!strcmp($item,"CZsviatky")){
-            $country_id = $countries["CZ"]["id"];
-            $value = trim($row->CZsviatky);
-            $type = "holiday";
-            $stmtRecords->execute();
-        }else if(!strcmp($item,"SKdni")){
-            $country_id = $countries["SK"]["id"];
-            $value = trim($row->SKdni);
-            $type = "memorial";
-            $stmtRecords->execute();
-        }else if (strcmp($item,"den")){
-            var_dump($item);
+        if(array_key_exists($item, $countries)){                       //ak meniny
+            addNames($item, $row->$item);
+        }
+        elseif(!strcmp($item,"SKd")){                           //ak sk doplnkove meniny
+            addNames("SK", $row->$item);
+        }
+        elseif(!strcmp($item,"SKsviatky")){                     //ak sk sviatok
+            addDays("SK", "holiday", $row->$item);
+        }
+        elseif(!strcmp($item,"CZsviatky")){                     //ak cz sviatok
+            addDays("CZ", "holiday", $row->$item);
+        }
+        elseif(!strcmp($item,"SKdni")){                         //ak sk pamatny den
+            addDays("SK", "memorial", $row->$item);
         }
     }
 }
 
+function handleCountry($item){
+    global $countries, $code, $title, $stmtCountries, $conn;
+    if(!isset($countries[$item]["id"])){
+
+        $code = $item;
+        $title = $countries[$item]["title"];
+        $stmtCountries->execute();
+
+        $c = $conn->prepare("SELECT id FROM countries WHERE code='".$code."'");
+        $c->execute();
+        $countries[$item]["id"] = $c->fetchColumn();
+    }
+}
+
+function addDays($country, $typeName, $content){
+    global $countries, $country_id, $value, $type, $stmtRecords;
+
+    handleCountry($country);
+
+    $country_id = $countries[$country]["id"];
+    $value = trim($content);
+    $type = $typeName;
+    $stmtRecords->execute();
+}
+
+function addNames($country, $content){
+    global $type, $countries, $country_id, $value, $stmtRecords;
+
+    handleCountry($country);
+
+    $type = "name";
+    $country_id = $countries[$country]["id"];
+    foreach (explode(",", $content) as $name){
+        $value = trim($name);
+        if(!empty($value) && strcmp($value,"-")){
+            $stmtRecords->execute();
+        }
+    }
+}
 //header('Location:index.php');
