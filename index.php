@@ -185,8 +185,8 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         <p class="card-text">/api/SK/2804</p>
                         <h6 class="card-title mt-4 text-primary">RESPONSES</h6>
                         <p class="text-success">200 Success</p>
-                        <span class="card-text"><b>date</b>(string)</span>
-                        <p class="card-text">Example: 12.3.</p>
+                        <span class="card-text"><b>dates</b>(Array&#60;string&#62;)</span>
+                        <p class="card-text">Example: ["12.3.", "11.1."]</p>
                         <hr>
                         <p class="text-danger">404 Not Found</p>
                         <p class="card-text">Wrong country code or nobody found</p>
@@ -367,8 +367,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+getValue("specials"),
             function(data) {
-                console.log(typeof data);
-                console.log(data);
                 $( "#listArea" ).val(JSON.stringify(data));
             }
         );
@@ -378,8 +376,6 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC))
         $.get(
             "api/"+formatDateById("whoDate"),
             function(data) {
-                console.log(typeof data);
-                console.log(data);
                 $( "#whoArea" ).val(JSON.stringify(data));
             }
         ).fail(function(data, status, xhr) {

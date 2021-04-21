@@ -10,25 +10,27 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
     $name = ucfirst(strtolower($_GET["name"]));
     if(!in_array($country_code, $codes)){
         echo http_response_code(404);
-//        echo json_encode("invalid state code", JSON_UNESCAPED_UNICODE);
-//        return;
     }
 
     $stmt = $conn->query("SELECT days.day as day, days.month as month FROM records JOIN countries ON records.country_id=countries.id JOIN days ON records.day_id=days.id WHERE countries.code='".$country_code."' and records.value='".$name."'");
-    $dateField = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($dateField == null){
-        echo http_response_code(404);
-//        echo json_encode("nobody found", JSON_UNESCAPED_UNICODE);
-    }else{
-        echo json_encode($dateField["day"].".".$dateField["month"].".", JSON_UNESCAPED_UNICODE);
+    $records = [];
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    {
+        array_push($records, $row["day"].".".$row["month"]."." );
     }
+
+    if (count($records) == 0){
+        echo http_response_code(404);
+    }
+
+    echo json_encode($records, JSON_UNESCAPED_UNICODE);
 
 }else if(isset($_GET["date"])){
     $day = substr($_GET["date"], 0, 2);
     $month = substr($_GET["date"], 2, 2);
 
-    if(checkDate($day, $month) == -1){
+    if(checkDateInDB($day, $month) == -1){
         echo http_response_code(400);
     }
 
@@ -45,7 +47,6 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
     }
     if (count($records) == 0){
         echo http_response_code(404);
-//        array_push($records, "Nikto nemá meniny");
     }
     echo json_encode($records, JSON_UNESCAPED_UNICODE);
 
@@ -56,22 +57,20 @@ if(isset($_GET["code"]) && isset($_GET["name"])){
     $day = substr($_POST["date"], 0, 2);
     $month = substr($_POST["date"], 2, 2);
 
-    $dayId = checkDate($day, $month);
+    $dayId = checkDateInDB($day, $month);
     if($dayId == -1){
         echo http_response_code(400);
     }
 
     $stmt = $conn->query("INSERT INTO `records`(`day_id`, `country_id`, `type`, `value`) VALUES (".$dayId.",".$SKid.",'name','".$_POST["name"]."')");
-    //echo $dayId.",".$SKid.",'name',".$_POST["name"];
-//    echo json_encode("successfully added", JSON_UNESCAPED_UNICODE);
+
     echo http_response_code(200);
 } else{
     echo http_response_code(400);
-//    echo json_encode("missing or invalid parameters", JSON_UNESCAPED_UNICODE);
 }
 
 
-function checkDate($day, $month){
+function checkDateInDB($day, $month){
     global $conn;
     $stmt = $conn->query("SELECT id FROM days WHERE day=".$day." and month=".$month);
     $response = $stmt->fetch(PDO::FETCH_ASSOC);
